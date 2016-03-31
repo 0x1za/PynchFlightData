@@ -1,0 +1,39 @@
+public function getArrivalTime() {
+    return $this->arrivalTime;
+}
+
+public function getDepartureTime() {
+    return $this->departureTime;
+}
+
+public function getFlightName() {
+    return $this->flightName;
+}
+
+public function getFlightNumber() {
+    return $this->flightNumber;
+}
+
+public function getAirportOrigin() {
+    return $this->airportOrigin;
+}
+
+public function setArrivalTime($arrivalTime) {
+    $this->arrivalTime = $arrivalTime;
+}
+
+public function setDepartureTime($departureTime) {
+    $this->departureTime = $departureTime;
+}
+
+public function setFlightName($flightName) {
+    $this->flightName = $flightName;
+}
+
+public function setFlightNumber($flightNumber) {
+    $this->flightNumber = $flightNumber;
+}
+
+public function setAirportOrigin($airportOrigin) {
+    $this->airportOrigin = $airportOrigin;
+}

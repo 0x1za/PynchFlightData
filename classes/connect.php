@@ -13,16 +13,18 @@ class connectCloud{
     $this->password = $password;
     $this->hostname = $hostname;
     $this->database = $database;
-    global $database;
-    global $hostname;
-    global $password;
-    global $username;
-
-
-  }
-
-  private function connect(){
-
+    try {
+        $con = new PDO('mysql:host='.$this->hostname.'; dbname='.$this->database, $this->username, $this->password);
+        $con->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+        echo "Connection Successful";
+        $con->exec("SET CHARACTER SET utf8");  //  return all sql requests as UTF-8
+    }
+    catch (PDOException $err) {
+        echo "Database connectin failed! Contact server admin!";
+        $err->getMessage() . "<br/>";
+        file_put_contents('errorsCon.txt',$err, FILE_APPEND);  // write some details to an error-log outside public_html
+        die();  //  terminate connection
+    }
   }
 }
 ?>
