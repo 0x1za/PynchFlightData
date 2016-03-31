@@ -1,6 +1,9 @@
 <?php
 
 class FlightData {
+    //json variable to hold the json file been returned from the api
+    public $data;
+    //end
 
     // Variables being collected from the flight data API
     public function getArrivalTime() {
@@ -44,7 +47,7 @@ class FlightData {
     }
 
     public function __construct($year, $month, $day, $hour) {
-        $data = file_get_contents("https://api.flightstats.com/flex/flightstatus/rest/v2/json/airport/status/LUN/arr/$year/$month/$day/$hour?appId=f2fada9e&appKey=b3b6ad43212e524752691e4f5e2496ff&utc=false&numHours=5&codeType=FS&maxFlights=8");
+        $this->data = file_get_contents("https://api.flightstats.com/flex/flightstatus/rest/v2/json/airport/status/LUN/arr/$year/$month/$day/$hour?appId=f2fada9e&appKey=b3b6ad43212e524752691e4f5e2496ff&utc=false&numHours=5&codeType=FS&maxFlights=8");
     }
     //end of variables 
 
