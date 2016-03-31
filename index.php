@@ -23,6 +23,7 @@ class GetTime{
   public function __construct(){
     date_default_timezone_set("Africa/Lusaka");
     $this->time = time();
+
   }
   public function getTime($time){
 
