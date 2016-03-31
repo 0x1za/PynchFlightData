@@ -7,7 +7,6 @@ class connectCloud{
   private $password;
 
   //MySQL variables
-  public #c
 
   public function __construct($hostname, $username, $password, $database){
     $this->username = $username;
