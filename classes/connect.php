@@ -1,14 +1,27 @@
 <?php
+date_default_timezone_set("Africa/Lusaka");
+$time = time();
+$day = date("d");
+$year = date("Y");
+$hour = date("H");
+$month = date("m");
+
 class connectCloud{
   //Database connection variables
   private $database;
   private $hostname;
   private $username;
   private $password;
-  public $time;
   public $con;
 
-  //MySQL variables
+  //JSON variable to hold the json file been returned from the api
+  public $data;
+  public $airport;
+  public $day;
+  public $month;
+  public $year;
+  public $hour;
+  public $time;
 
   public function __construct($hostname, $username, $password, $database){
     $this->username = $username;
@@ -29,8 +42,8 @@ class connectCloud{
     }
   }
 
-  public function insertData($time){
-      $this->time = $time;
+  public function insertData($current_time){
+      $this->time = $current_time;
       //SQL Query
       $insert = $this->con->prepare("INSERT INTO time (id, time) VALUES (0, :time)");
       $insert->bindParam(':time', $this->time); //Insert Data
@@ -38,21 +51,27 @@ class connectCloud{
   }
 
   public function readData(){
-    $this->time = $time;
     //SQL Query
     $read = $this->con->prepare("SELECT * FROM time WHERE id = :id");
-    $read->bindValue(':id', 0);
+    $read->bindValue(':id', 4);
     $read->execute();
-    $lasttime = $read->fetchObject();
-    echo $read->time;
+    if ($read->rowCount() > 0){
+        $check = $read->fetch(PDO::FETCH_ASSOC);
+        return $row_id = $check['time'];
+        global $row_id;
+    } else {
+      echo "No records found!";
+    }
   }
 
-  public function updateData(){
+  public function updateData($current_time){
 
   }
 }
 
 //Test area [CAUTION HARZARDS AHEAD]
 $connection = new connectCloud('localhost', 'root', 'pynch2015', 'flights');
-$connection->insertData('12552525252');
+$connection->insertData($time);
+$connection->readData();
+echo $row_id;
 ?>
