@@ -53,31 +53,40 @@ class connectCloud{
   public function readData(){
     //SQL Query
     $read = $this->con->prepare("SELECT * FROM time WHERE id = :id");
-    $read->bindValue(':id', 4);
+    $read->bindValue(':id', 0);
     $read->execute();
     if ($read->rowCount() > 0){
         $check = $read->fetch(PDO::FETCH_ASSOC);
-        return $row_id = $check['time'];
-        global $row_id;
+        return $old_time = $check['time'];
     } else {
-      echo "No records found!";
+      return $old_time = false;
     }
   }
 
   public function updateData($current_time){
-
+    //SQL Query
+    $update = $this->con->prepare("UPDATE time SET time = $current_time WHERE id = :id");
+    $update->bindValue(':id', 0);
+    $update->execute();
+    echo $current_time.'<br>';
   }
 }
 
 //Test area [CAUTION HARZARDS AHEAD]
 $connection = new connectCloud('localhost', 'root', 'pynch2015', 'flights');
-$connection->insertData($time);
-$old_time = $connection->readData();
-//echo $old_time;
-$time_difference =  ($time - $old_time);
-if($time_difference =< 3600){
-  echo "Read from TXT file";
+echo $old_time = $connection->readData();
+if($old_time = false){
+  $connection->insertData($time);
 } else {
-  echo "Grab data from the api";
+  $time_difference =  ($time - $old_time);
+  if($time_difference <= 2470){
+    echo "Read from TXT file";
+    echo $time_difference;
+  } else {
+    echo "Grab data from the api";
+    //echo $time_difference.'<br>';
+    //$connection->updateData($time);
+    echo $old_time;
+  }
 }
 ?>
