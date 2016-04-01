@@ -75,11 +75,12 @@ class connectCloud{
 //Test area [CAUTION HARZARDS AHEAD]
 $connection = new connectCloud('localhost', 'root', 'pynch2015', 'flights');
 echo $old_time = $connection->readData();
+
 if($old_time = false){
   $connection->insertData($time);
 } else {
   $time_difference =  ($time - $old_time);
-  if($time_difference <= 2470){
+  if($time_difference <= 3600){
     echo "Read from TXT file";
     echo $time_difference;
   } else {
