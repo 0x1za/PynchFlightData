@@ -26,5 +26,21 @@ class connectCloud{
         die();  //  terminate connection
     }
   }
+
+  public function insertData($time){
+      global $this->time = $time;
+      //SQL Query
+      $insert = $con->prepare("INSERT INTO flights (id, time) VALUES (0, :time)");
+      $insert->bindParam(':time', $this->time); //Insert Data
+      $insert->execute();
+  }
+
+  public function readData(){
+
+  }
+
+  public function updateData(){
+
+  }
 }
 ?>
