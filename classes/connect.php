@@ -32,7 +32,7 @@ class connectCloud{
     try {
         $this->con = new PDO('mysql:host='.$this->hostname.'; dbname='.$this->database, $this->username, $this->password);
         $this->con->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-        echo "Connection Successful";
+        //echo "Connection Successful";
         $this->con->exec("SET CHARACTER SET utf8");  //  return all sql requests as UTF-8
     }
     catch (PDOException $err) {
@@ -72,6 +72,12 @@ class connectCloud{
 //Test area [CAUTION HARZARDS AHEAD]
 $connection = new connectCloud('localhost', 'root', 'pynch2015', 'flights');
 $connection->insertData($time);
-$connection->readData();
-echo $row_id;
+$old_time = $connection->readData();
+//echo $old_time;
+$time_difference =  ($time - $old_time);
+if($time_difference =< 3600){
+  echo "Read from TXT file";
+} else {
+  echo "Grab data from the api";
+}
 ?>
