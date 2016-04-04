@@ -1,12 +1,36 @@
 <?php
 date_default_timezone_set("Africa/Lusaka");
 $time = time();
-$day = date("d");
-$year = date("Y");
-$hour = date("H");
-$month = date("m");
+
 
 class connectCloud{
+  //api data time getters variables
+
+  private $day;
+  private $year;
+  private $month;
+  private $hour;
+  public function getCurrent_time() {
+      return $this->current_time=time();
+  }
+
+    public function getDay() {
+      return $this->day=date("d");
+  }
+
+  public function getMonth() {
+      return $this->month=date("m");
+  }
+
+  public function getYear() {
+      return $this->year=date("Y");
+  }
+
+  public function getHour() {
+      return $this->hour=date("H");
+  }
+
+    //end
   //Database connection variables
   private $database;
   private $hostname;
@@ -17,13 +41,10 @@ class connectCloud{
   //JSON variable to hold the json file been returned from the api
   public $data;
   public $airport;
-  public $day;
-  public $month;
-  public $year;
-  public $hour;
-  public $time;
+
 
   public function __construct($hostname, $username, $password, $database){
+
     $this->username = $username;
     $this->password = $password;
     $this->hostname = $hostname;
@@ -45,14 +66,14 @@ class connectCloud{
   public function insertData($current_time){
       $this->time = $current_time;
       //SQL Query
-      $insert = $this->con->prepare("INSERT INTO time (id, time) VALUES (0, :time)");
+      $insert = $this->con->prepare("INSERT INTO time (time_id, time) VALUES (0, :time)");
       $insert->bindParam(':time', $this->time); //Insert Data
       $insert->execute();
   }
 
   public function readData(){
     //SQL Query
-    $read = $this->con->prepare("SELECT * FROM time WHERE id = :id");
+    $read = $this->con->prepare("SELECT * FROM time WHERE time_id = :id");
     $read->bindValue(':id', 0);
     $read->execute();
     if ($read->rowCount() > 0){
@@ -70,24 +91,18 @@ class connectCloud{
     $update->execute();
     echo $current_time.'<br>';
   }
-}
-
-//Test area [CAUTION HARZARDS AHEAD]
-$connection = new connectCloud('localhost', 'root', 'pynch2015', 'flights');
-$old_time = $connection->readData();
-
-if($old_time = false){
-  $connection->insertData($time);
-} else {
-  $time_difference =  ($time - $old_time);
-  if($time_difference < 3600){
-    echo "Read from TXT file";
-    echo $time_difference;
-  } else {
-    echo "Grab data from the api";
-    //echo $time_difference.'<br>';
-    //$connection->updateData($time);
-    //echo $old_time;
+  
+  public function getApiData($year,$month,$day,$hour){
+        $data = file_get_contents("https://api.flightstats.com/flex/flightstatus/rest/v2/json/airport/status/LUN/arr/$year/$month/$day/$hour?appId=f2fada9e&appKey=b3b6ad43212e524752691e4f5e2496ff&utc=false&numHours=5&codeType=FS&maxFlights=10");
+        $mydata = json_decode($data);
+        //writing to a file
+        $myfile = fopen("flightdata.txt", "w") or die("Unable to open file!");
+        fwrite($myfile,$data);
+        fclose($myfile);
+        //end
   }
 }
 ?>
+
+
+

@@ -3,11 +3,7 @@ class getFlightData {
     //JSON variable to hold the json file been returned from the api
     public $data;
     public $airport;
-    public $day;
-    public $month;
-    public $year;
-    public $hour;
-    public $time;
+
 
     // Variables being collected from the flight data API
     public function __construct($year, $month, $day, $hour) {

@@ -1,32 +1,38 @@
 <?php
-class FlightData{
-  // Variables being collected from the flight data API
-  public $arrivalTime;
-  public $departureTime;
-  public $flightName;
-  public $flightNumber;
-  public $airportOrigin;
+include("classes/connect.php");
+//Test area [CAUTION HARZARDS AHEAD]
+$connection = new connectCloud('localhost', 'root', '', 'flights');
+$old_time = $connection->readData();
 
-  public function __construct($year, $month, $day, $hour){
-    $data = file_get_contents("https://api.flightstats.com/flex/flightstatus/rest/v2/json/airport/status/LUN/arr/$year/$month/$day/$hour?appId=f2fada9e&appKey=b3b6ad43212e524752691e4f5e2496ff&utc=false&numHours=5&codeType=FS&maxFlights=8");
-
+if($old_time = false){
+    
+                $connection->insertData($time);
+} 
+else {
+                $time_difference =   ($connection->getCurrent_time() - $old_time)/3600;
+                if($time_difference > 1.106388888888){
+                 echo "hey not yet an hour bra";
+                  //reading from a txt file
+                  $myfile = fopen("flightdata.txt", "r") or die("Unable to open file!");
+                  // Output one line until end-of-file
+                  while(!feof($myfile)) {
+                    $data = fgets($myfile);
+                  }
+                  fclose($myfile);
+                  $mydata = $data;
+                  //end
+                  echo $connection->getCurrent_time();
+  }
+  else {
+                echo "Grab data from the api";
+                //echo $time_difference.'<br>';
+                //$connection->updateData($time);
+                //echo $old_time;
+                //grabing data from de api
+                $connection->insertData(time());
+                $connection->getApiData($connection->getYear(),$connection->getMonth(),$connection->getDay(),$connection->getHour());
+                //end
   }
 }
 
-class GetTime{
-  public $day;
-  public $date;
-  public $year;
-  public $hour;
-  public $time;
-
-  public function __construct(){
-    date_default_timezone_set("Africa/Lusaka");
-    $this->time = time();
-
-  }
-  public function getTime($time){
-
-  }
-}
 ?>
