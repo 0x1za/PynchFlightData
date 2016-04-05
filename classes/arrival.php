@@ -1,37 +1,100 @@
 <?php
-class getFlightData {
+class Arrival {
     //JSON variable to hold the json file been returned from the api
-    public $data;
-    public $airport;
-
-
-    // Variables being collected from the flight data API
-    public function __construct($year, $month, $day, $hour) {
-      $this->data = file_get_contents("https://api.flightstats.com/flex/flightstatus/rest/v2/json/airport/status/LUN/arr/$year/$month/$day/$hour?appId=f2fada9e&appKey=b3b6ad43212e524752691e4f5e2496ff&utc=false&numHours=5&codeType=FS&maxFlights=8");
-      return $data;
-    }
-    public function getTime(){
-      date_default_timezone_set("Africa/Lusaka");
-      $this->time = time();
-      $this->day = date("d");
-      $this->year = date("Y");
-      $this->hour = date("H");
-      $this->month = date("m");
-
-      //Return collected values
-      return
-    }
-    //End of variables
-    public function getInformation(){
-
+    private $data;
+    private $airportName;
+    private $flightName;
+    private $arrivalTime;
+    private $departureTime;
+    private $flightNumber;
+    private $flightOrigin;
+    public function getFlightOrigin() {
+        return $this->flightOrigin;
     }
 
-}
-
-class GetTime {
-    public function __construct() {
-
+    public function setFlightOrigin($flightOrigin) {
+        $this->flightOrigin = $flightOrigin;
     }
+
+        public function getAirportName() {
+        return $this->airportName;
+    }
+
+    public function getFlightName() {
+        return $this->flightName;
+    }
+
+    public function getArrivalTime() {
+        return $this->arrivalTime;
+    }
+
+    public function getDepartureTime() {
+        return $this->departureTime;
+    }
+
+    public function getFlightNumber() {
+        return $this->flightNumber;
+    }
+
+    public function setAirportName($airportName) {
+        $this->airportName = $airportName;
+    }
+
+    public function setFlightName($flightName) {
+        $this->flightName = $flightName;
+    }
+
+    public function setArrivalTime($arrivalTime) {
+        $arrivalTime = substr($arrivalTime, 11, -7);  // returns "abcde"
+        $this->arrivalTime = $arrivalTime;
+    }
+
+    public function setDepartureTime($departureTime) {
+        $this->departureTime = $departureTime;
+    }
+
+    public function setFlightNumber($flightNumber) {
+        $this->flightNumber = $flightNumber;
+    }
+    public function setData($mydata){
+                  $this->setFlightName($mydata->appendix->airlines[0]->name);
+                  $this->setAirportName($mydata->appendix->airports[0]->name);
+                  $this->setFlightNumber( $mydata->flightStatuses[0]->flightNumber);
+                  $this->setArrivalTime($mydata->flightStatuses[0]->arrivalDate->dateLocal);
+                  $this->setDepartureTime( $mydata->flightStatuses[0]->departureDate->dateLocal);
+                
+                  
+    }
+    public function getData(){
+       echo "<table class='table'>
+    <thead>
+      <tr>
+        <th>Flight Name  #</th>
+          <th>From</th>
+           <th>to</th>
+         <th>Departure</th>
+         <th>Arrival</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class='success'>";
+       
+       ?>
+<th><?php echo  $this->getFlightName()." "; echo $this->flightNumber?></th>
+	    <td>Heathrow</td>
+            <td><?php echo $this->getAirportName()?></td>
+	    <td>12:00</td>
+	    <td><?php echo $this->getArrivalTime()?></td>
+	  </tr>
+	
+	</table>
+        <?php
+        
+    }
+
+
+
+
 }
 
 ?>

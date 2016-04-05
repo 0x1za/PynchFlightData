@@ -39,8 +39,11 @@ class connectCloud{
   public $con;
 
   //JSON variable to hold the json file been returned from the api
-  public $data;
-  public $airport;
+  public function setData($data) {
+      $this->data = $data;
+  }
+
+    public $airport;
 
 
   public function __construct($hostname, $username, $password, $database){
@@ -95,6 +98,7 @@ class connectCloud{
   public function getApiData($year,$month,$day,$hour){
         $data = file_get_contents("https://api.flightstats.com/flex/flightstatus/rest/v2/json/airport/status/LUN/arr/$year/$month/$day/$hour?appId=f2fada9e&appKey=b3b6ad43212e524752691e4f5e2496ff&utc=false&numHours=5&codeType=FS&maxFlights=10");
         $mydata = json_decode($data);
+        $connection->setData($data);
         //writing to a file
         $myfile = fopen("flightdata.txt", "w") or die("Unable to open file!");
         fwrite($myfile,$data);
