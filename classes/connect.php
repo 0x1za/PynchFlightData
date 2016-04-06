@@ -94,19 +94,30 @@ class connectCloud{
     $update->execute();
     echo $current_time.'<br>';
   }
-  
-  public function getApiData($year,$month,$day,$hour){
-        $data = file_get_contents("https://api.flightstats.com/flex/flightstatus/rest/v2/json/airport/status/LUN/arr/$year/$month/$day/$hour?appId=f2fada9e&appKey=b3b6ad43212e524752691e4f5e2496ff&utc=false&numHours=5&codeType=FS&maxFlights=10");
-        $mydata = json_decode($data);
-        $connection->setData($data);
-        //writing to a file
-        $myfile = fopen("flightdata.txt", "w") or die("Unable to open file!");
-        fwrite($myfile,$data);
-        fclose($myfile);
-        //end
+
+  public function getApiData($year,$month,$day,$hour,$url){
+        if($url=="arrival"){
+          $data = file_get_contents("https://api.flightstats.com/flex/schedules/rest/v1/json/to/LUN/arriving/$year/$month/$day/$hour?appId=f2fada9e&appKey=b3b6ad43212e524752691e4f5e2496ff");
+          $mydata = json_decode($data);
+          $connection->setData($data);
+          //writing to a file
+          $myfile = fopen("flightdata.txt", "w") or die("Unable to open file!");
+          fwrite($myfile,$data);
+          fclose($myfile);
+          //end
+        }
+        else {
+          # code...
+          $data = file_get_contents("https://api.flightstats.com/flex/schedules/rest/v1/json/from/LUN/departing/$year/$month/$day/$hour?appId=f2fada9e&appKey=b3b6ad43212e524752691e4f5e2496ff");
+          $mydata = json_decode($data);
+          $connection->setData($data);
+          //writing to a file
+          $myfile = fopen("datadepart.txt", "w") or die("Unable to open file!");
+          fwrite($myfile,$data);
+          fclose($myfile);
+
+        }
+
   }
 }
 ?>
-
-
-
