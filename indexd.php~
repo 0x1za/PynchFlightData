@@ -11,7 +11,7 @@
 <body>
 <?php
 include("classes/connect.php");
-include("classes/arrival.php");
+include("classes/departure.php");
 //Test area [CAUTION HARZARDS AHEAD]
 $connection = new connectCloud('localhost', 'root', 'pynch2015', 'flights','arrival');
 $arrival  = new Arrival();
@@ -54,7 +54,7 @@ else {
 <?php
                   //setting data from the api
                   $counter=0;
-               while($counter<=3){
+               while($counter<=2){
                   $arrival->setData($mydata,$counter);
                   //end
                   //getting table data from api
@@ -73,9 +73,36 @@ else {
                 echo $old_time;
                 //grabing data from de api
                 $connection->insertData(time());
-                $connection->getApiData($connection->getYear(),$connection->getMonth(),$connection->getDay(),$connection->getHour());
+                $connection->getApiData($connection->getYear(),$connection->getMonth(),$connection->getDay(),$connection->getHour(),'depart');
 
                 //end
+                ?>
+                
+                <table class='table'>
+   				   <thead>
+     				<tr>
+       			     <th>Arrival</th>
+					 <th>Flight No</th>
+					 <th>Origin</th>
+					  <th>Status</th>
+					</tr>
+				  </thead>
+				 <tbody>
+			     <tr class='success'>
+                
+  <?php   
+  //setting data from the api
+                  $counter=0;
+               while($counter<=2){
+                  $arrival->setData($connection->getdata(),$counter);
+                  //end
+                  //getting table data from api
+                  $arrival->getData();
+                  $counter++;
+                 }
+                 echo "</tbody>
+	               </table>";
+                  //end           
   }
 }
 
@@ -83,3 +110,4 @@ else {
 
 </body>
 </html>
+

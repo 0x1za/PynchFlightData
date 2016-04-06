@@ -23,8 +23,8 @@ if($old_time = false){
 }
 else {
                 $time_difference =   ($connection->getCurrent_time() - $old_time)/3600;
-                if($time_difference > 1.106388888888){
-                 echo "hey not yet an hour bra";
+                if($time_difference > 3600){
+                 //echo "hey not yet an hour bra";
                   //reading from a txt file
                   $myfile = fopen("flightdata.txt", "r") or die("Unable to open file!");
                   // Output one line until end-of-file
@@ -54,12 +54,11 @@ else {
 <?php
                   //setting data from the api
                   $counter=0;
-               while($counter<=3){
+               while($counter<3){
                   $arrival->setData($mydata,$counter);
                   //end
                   //getting table data from api
                   $arrival->getData();
-echo $counter;
                   $counter++;
                  }
                  echo "</tbody>
@@ -70,13 +69,41 @@ echo $counter;
   else {
                 echo "Grab data from the api";
                 //echo $time_difference.'<br>';
-                //$connection->updateData($time);
+                $connection->updateData($time);
                 echo $old_time;
                 //grabing data from de api
                 $connection->insertData(time());
-                $connection->getApiData($connection->getYear(),$connection->getMonth(),$connection->getDay(),$connection->getHour());
+                $connection->getApiData($connection->getYear(),$connection->getMonth(),$connection->getDay(),$connection->getHour(),'arrival');
 
                 //end
+                ?>
+                
+                <table class='table'>
+   				   <thead>
+     				<tr>
+       			     <th>Arrival</th>
+					 <th>Flight No</th>
+					 <th>Origin</th>
+					  <th>Status</th>
+					</tr>
+				  </thead>
+				 <tbody>
+			     <tr class='success'>
+                
+  <?php   
+  //setting data from the api
+                  $counter=0;
+               while($counter<3){
+                  $arrival->setData(json_decode($connection->getdata()),$counter);
+                  
+                  //end
+                  //getting table data from api
+                  $arrival->getData();
+                  $counter++;
+                 }
+                 echo "</tbody>
+	               </table>";
+                  //end           
   }
 }
 

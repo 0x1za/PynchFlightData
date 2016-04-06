@@ -1,7 +1,7 @@
 <?php
 class Arrival {
     //JSON variable to hold the json file been returned from the api
-    private $data;
+    private $jsonData;
     private $airportName;
     private $flightName;
     private $arrivalTime;
@@ -12,12 +12,18 @@ class Arrival {
     public function getstatus() {
         return $this->status;
     }
+    public function getjsonData(){
+      return $this->jsonData;
+    }
     public function getFlightOrigin() {
         return $this->flightOrigin;
     }
 
     public function setFlightOrigin($flightOrigin) {
         $this->flightOrigin = $flightOrigin;
+    }
+    public function setjsonData($da){
+      $this->jsonData=$da;
     }
 
         public function getAirportName() {
@@ -66,14 +72,56 @@ class Arrival {
         $this->flightNumber = $flightNumber;
     }
     public function setData($mydata,$i){
-                //  $mydata = json_decode($mydata);
-                  $this->setstatus("scheduled");
-                  $this->setFlightName($mydata->scheduledFlights[$i]->carrierFsCode);
+      //echo $mydata;
+                
+
+
+                  if(isset($mydata->scheduledFlights[$i]->carrierFsCode)){
+                      $this->setFlightName($mydata->scheduledFlights[$i]->carrierFsCode);
+                  }
+                  else{
+                        $this->setFlightName("not avl");
+                  }
+                  if(isset($mydata->scheduledFlights[$i]->carrierFsCode)){
+                     $this->setFlightName($mydata->scheduledFlights[$i]->carrierFsCode);
+                     $this->setstatus("scheduled");
+
+                  }
+                  else {
+                    # code...
+                    $this->setFlightName("not avl");
+                    $this->setstatus("not avl");
+
+                  }
                 //  $this->setAirportName($mydata->scheduledFlights[$i]->carrierFsCode);
-                  $this->setFlightNumber($mydata->scheduledFlights[$i]->flightNumber);
-                  $this->setArrivalTime($mydata->scheduledFlights[$i]->arrivalTime);
-                  $this->setDepartureTime($mydata->scheduledFlights[$i]->departureTime);
-                  $this->setFlightOrigin($mydata->scheduledFlights[$i]->departureAirportFsCode);
+                  if(isset($mydata->scheduledFlights[$i]->flightNumber)){
+                    $this->setFlightNumber($mydata->scheduledFlights[$i]->flightNumber);
+                  }
+                  else{
+                     $this->setFlightNumber("not avl");
+                  }
+                  if(isset($mydata->scheduledFlights[$i]->arrivalTime)){
+                      $this->setArrivalTime($mydata->scheduledFlights[$i]->arrivalTime);
+                  }
+                  else{
+                       $this->setArrivalTime("not avl");
+                  }
+                  if(isset($mydata->scheduledFlights[$i]->departureTime)){
+                     $this->setDepartureTime($mydata->scheduledFlights[$i]->departureTime);
+                  }
+                  else{
+                    $this->setDepartureTime("not avl");
+
+                  }
+                  if(isset($mydata->scheduledFlights[$i]->departureAirportFsCode)){
+                    $this->setFlightOrigin($mydata->scheduledFlights[$i]->departureAirportFsCode);
+                  }
+                  else{
+                     $this->setFlightOrigin("not avl");
+                  }
+
+
+
 
     }
     public function getData(){
